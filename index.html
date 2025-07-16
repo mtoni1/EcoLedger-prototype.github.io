@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>EcoLedger</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f8fdf8;
+      color: #252d20;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .app-header {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      padding: 2rem 1.5rem 1rem 1.5rem;
+      background: transparent;
+      box-shadow: none;
+      justify-content: flex-start;
+    }
+
+    .ecoledger-gradient {
+      font-size: 2.5rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      background: linear-gradient(90deg, #51c46d, #7b8de3, #47e2c2, #51c46d);
+      background-size: 200% auto;
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+      animation: gradientMove 3s linear infinite;
+      position: relative;
+      display: inline-block;
+      margin: 0;
+    }
+
+    .fade-out {
+      animation: fadeOut 2.5s 0.8s forwards;
+    }
+
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 100% 50%; }
+    }
+
+    @keyframes fadeOut {
+      0% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+
+    /* SVG styling */
+    .logo-svg {
+      width: 120px;
+      height: 60px;
+      display: block;
+    }
+
+    nav {
+      display: flex;
+      gap: 1.2rem;
+      padding: 0 2rem 1rem 2rem;
+      border-bottom: 1px solid #d8efd6;
+      background: transparent;
+      justify-content: flex-start;
+      font-size: 1.07rem;
+    }
+
+    nav a {
+      color: #187943;
+      text-decoration: none;
+      transition: color 0.2s;
+      padding: 0.2rem 0.7rem;
+      border-radius: 3px;
+    }
+
+    nav a.active, nav a:hover {
+      background: #e7fae9;
+      color: #3d6ee5;
+    }
+
+    main {
+      flex: 1;
+      width: 100%;
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 1.7rem 1rem 1.5rem 1rem;
+    }
+
+    .card {
+      background: white;
+      border-radius: 10px;
+      padding: 1.2rem 1.3rem;
+      margin-bottom: 1.2rem;
+      box-shadow: 0px 2px 12px rgba(104,176,132,0.05);
+      border: 1.2px solid #f2fbe9;
+    }
+
+    .quick-actions {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .quick-actions button {
+      background: #7b8de3;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 0.6rem 1.1rem;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .quick-actions button:hover {
+      background: #47e2c2;
+      color: #185b2a;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1.2rem;
+      font-size: 0.96rem;
+      color: #8aa08e;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 600px) {
+      .app-header {
+        flex-direction: column;
+        gap: 0.8rem;
+        align-items: flex-start;
+      }
+      main {
+        padding: 1rem 0.3rem 0.8rem 0.3rem;
+      }
+      nav {
+        flex-wrap: wrap;
+        padding: 0 0.6rem 0.7rem 0.6rem;
+      }
+      .logo-svg {
+        width: 80px;
+        height: 45px;
+      }
+    }
+
+  </style>
+</head>
+
+<body>
+  <header class="app-header">
+    <svg class="logo-svg" viewBox="0 0 120 60" fill="none">
+      <!-- Ledger book base -->
+      <rect x="10" y="25" width="100" height="20" rx="6" stroke="#333" stroke-width="2" fill="none"/>
+      <line x1="60" y1="25" x2="60" y2="45" stroke="#333" stroke-width="2" />
+      <!-- Open pages-style curved lines -->
+      <path d="M10 35 Q60 5, 110 35" stroke="#aaa" stroke-width="1.5" fill="none"/>
+      <!-- Pencil-drawn leaf on left page -->
+      <path d="M35 18 Q40 10, 45 18 Q40 16, 40 22 Q40 20, 35 18" stroke="#3a5d23" stroke-width="1.5" fill="none"/>
+    </svg>
+    <h1 id="ecoLogo" class="ecoledger-gradient">EcoLedger</h1>
+  </header>
+
+  <nav>
+    <a href="#home" class="active" id="nav-home">Home</a>
+    <a href="#track" id="nav-track">Track</a>
+    <a href="#market" id="nav-market">Market</a>
+    <a href="#offsets" id="nav-offsets">Offsets</a>
+    <a href="#profile" id="nav-profile">Profile</a>
+  </nav>
+
+  <main id="main">
+    <!-- Page content dynamically inserted here -->
+  </main>
+
+  <footer>
+    &copy; 2025 EcoLedger. All rights reserved.
+  </footer>
+
+  <script>
+    // DATA (should not cause variables not defined)
+    const userData = {
+      name: "James",
+      ecoPoints: 456,
+      offsets: 28,
+      totalSavedKg: 89.7,
+      partner: {
+        name: "Kariakoo Fresh Supplies",
+        type: "Vegetable Vendor",
+        status: "Eco Partner"
+      }
+    };
+
+    // Main Pages Content
+    const pages = {
+      home: `
+        <section class="card">
+          <div style="font-size:1.15rem;margin-bottom:5px;">
+            Good morning, <strong>${userData.name}</strong>! 🌱
+          </div>
+          <div>${userData.partner.name}<br>
+            <span style="font-size:1rem;">${userData.partner.type}</span> ·
+            <span style="color:#49904f;">${userData.partner.status}</span>
+          </div>
+        </section>
+        <section class="card">
+          <div style="display:flex;align-items: center; gap: 1.6rem;">
+            <div>
+              <span style="font-size:2rem;font-weight:700;">12.4kg</span>
+              <div style="color: #8aa08e; font-size:1rem;">This Week</div>
+            </div>
+            <div>
+              <span style="font-size:1.4rem;font-weight:600;">${userData.ecoPoints}</span>
+              <div style="color: #8aa08e;">EcoPoints</div>
+            </div>
+            <div>
+              <span style="font-size:1.1rem;font-weight:600;">${userData.offsets}</span>
+              <div style="color: #8aa08e;">Offsets</div>
+            </div>
+            <div>
+              <span style="font-size:1.1rem;font-weight:600;">${userData.totalSavedKg}kg</span>
+              <div style="color: #8aa08e;">Total Saved</div>
+            </div>
+          </div>
+        </section>
+        <div class="quick-actions">
+          <button onclick="loadPage('track')">Log Daily Waste</button>
+          <button onclick="loadPage('market')">Visit Marketplace</button>
+        </div>
+      `,
+      track: `
+        <section class="card">
+          <h2>Waste Tracking</h2>
+          <p>Log Your Daily Waste Progress</p>
+          <form onsubmit="event.preventDefault(); alert('Waste logged!');">
+            <input type="number" min="0" placeholder="Waste today (kg)" required style="padding:0.4rem; border-radius:4px;border:1px solid #b5e4b8;" />
+            <button type="submit" style="margin-left:10px;" class="quick-actions">Log Waste</button>
+          </form>
+          <div style="color:#9b9b9b;font-size:0.98rem;margin-top:1rem;">
+            Recent Entries:<br/>
+            <ul>
+              <li>2025-07-16: 1.2 kg</li>
+              <li>2025-07-15: 0.7 kg</li>
+            </ul>
+          </div>
+        </section>
+      `,
+      market: `
+        <section class="card">
+          <h2>Eco Marketplace</h2>
+          <p>Local Eco Partners &amp; Redeem Points</p>
+          <ul>
+            <li>Vegetable Vendors · 10% discount with EcoPoints</li>
+            <li>Tote Bags from Upcycle Co.</li>
+            <li>Reusable Shoes exchanges</li>
+          </ul>
+          <button class="quick-actions" onclick="alert('Searching partners nearby…')">Nearby Partners</button>
+        </section>
+      `,
+      offsets: `
+        <section class="card">
+          <h2>Offset Progress</h2>
+          <div>You have offset <strong>${userData.offsets}</strong> activities this month.</div>
+          <div>Total Waste Saved: <strong>${userData.totalSavedKg} kg</strong></div>
+        </section>
+      `,
+      profile: `
+        <section class="card">
+          <h2>Profile</h2>
+          <div>
+            Name: <strong>${userData.name}</strong>
+            <br>
+            EcoPoints: <strong>${userData.ecoPoints}</strong>
+            <br>
+            Current Partner: ${userData.partner.name} (${userData.partner.type})
+          </div>
+        </section>
+      `
+    };
+
+    // Navigation functions
+    function setActive(page) {
+      // Remove .active from all links
+      document.querySelectorAll('nav a').forEach(link => link.classList.remove('active'));
+      // Add .active to the requested page
+      let nav = document.querySelector(`#nav-${page}`);
+      if (nav) nav.classList.add('active');
+    }
+
+    function loadPage(page) {
+      if (!pages[page]) return;
+      document.getElementById('main').innerHTML = pages[page];
+      setActive(page);
+    }
+
+    // Hook up nav links
+    document.querySelectorAll('nav a').forEach(link => {
+      link.onclick = function(ev) {
+        ev.preventDefault();
+        let page = link.getAttribute('href').replace('#', '');
+        loadPage(page);
+        history.replaceState({}, '', `#${page}`);
+      };
+    });
+
+    // On initial load, show page from URL or fallback to home
+    const firstPage = location.hash.replace('#','') || 'home';
+    loadPage(firstPage);
+
+    // OPTIONAL: Start fade-out on logo after 2.5s for visual effect
+    setTimeout(() => {
+      document.getElementById('ecoLogo').classList.add('fade-out');
+    }, 2500);
+
+  </script>
+</body>
+</html>

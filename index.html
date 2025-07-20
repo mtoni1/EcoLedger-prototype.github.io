@@ -3,8 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EcoLedger - Track Your Waste Impact</title>
+    <title>EcoLedger - Carbon Tracking & Trading</title>
     <style>
+        :root {
+            --primary-color: #2d5a27;
+            --secondary-color: #4a7c59;
+            --accent-color: #7eb069;
+            --background-color: #ffffff;
+            --surface-color: #f8fdf6;
+            --text-color: #1a1a1a;
+            --text-secondary: #666666;
+            --border-color: #e0e0e0;
+            --success-color: #4caf50;
+            --warning-color: #ff9800;
+            --error-color: #f44336;
+        }
+        /* Responsive */
+        @media (max-width: 480px) {
+            .app-container {
+                max-width: 100%;
+            }
+            
+            .proof-options {
+                flex-direction: column;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #7eb069;
+            --secondary-color: #4a7c59;
+            --accent-color: #2d5a27;
+            --background-color: #121212;
+            --surface-color: #1e1e1e;
+            --text-color: #ffffff;
+            --text-secondary: #b0b0b0;
+            --border-color: #333333;
+            --success-color: #66bb6a;
+            --warning-color: #ffb74d;
+            --error-color: #ef5350;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -12,124 +54,121 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #e8f5e8 0%, #f0f9ff 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .phone-container {
-            width: 375px;
-            height: 812px;
-            background: #000;
-            border-radius: 40px;
-            padding: 8px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .phone-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 150px;
-            height: 30px;
-            background: #000;
-            border-radius: 0 0 20px 20px;
-            z-index: 10;
-        }
-
-        .screen {
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(180deg, #ffffff 0%, #f8fffe 100%);
-            border-radius: 32px;
-            overflow: hidden;
-            position: relative;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--background-color);
+            color: var(--text-color);
             transition: all 0.3s ease;
+            line-height: 1.6;
         }
 
-        .app-header {
-            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
-            padding: 60px 20px 30px;
-            text-align: center;
+        .app-container {
+            max-width: 414px;
+            margin: 0 auto;
+            background: var(--background-color);
+            min-height: 100vh;
             position: relative;
-            overflow: hidden;
         }
 
-        .app-header::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-            animation: ripple 4s ease-in-out infinite;
-        }
-
-        @keyframes ripple {
-            0%, 100% { transform: scale(0.8); opacity: 0.5; }
-            50% { transform: scale(1.2); opacity: 0.2; }
-        }
-
-        .logo-container {
-            position: relative;
-            z-index: 2;
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background: var(--surface-color);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
         .logo {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, #ffffff 0%, #f0f9ff 100%);
-            border-radius: 20px;
-            margin: 0 auto 15px;
             display: flex;
             align-items: center;
-            justify-content: center;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-            animation: float 3s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-5px); }
-        }
-
-        .logo-icon {
-            font-size: 40px;
-            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .app-title {
-            color: white;
-            font-size: 28px;
+            gap: 10px;
             font-weight: 700;
-            margin-bottom: 8px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            font-size: 18px;
+            color: var(--primary-color);
         }
 
-        .app-subtitle {
-            color: rgba(255,255,255,0.9);
-            font-size: 16px;
-            font-weight: 400;
+        .theme-toggle {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s ease;
         }
 
+        .theme-toggle:hover {
+            background: var(--secondary-color);
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 414px;
+            background: var(--surface-color);
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-around;
+            padding: 15px 0;
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--text-secondary);
+            text-decoration: none;
+        }
+
+        .nav-item.active,
+        .nav-item:hover {
+            color: var(--primary-color);
+        }
+
+        .nav-icon {
+            width: 24px;
+            height: 24px;
+        }
+
+        .nav-text {
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        /* Main Content */
         .main-content {
-            padding: 30px 20px;
-            height: calc(100% - 180px);
-            overflow-y: auto;
+            padding: 20px;
+            padding-bottom: 100px;
         }
 
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Dashboard */
         .stats-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -138,505 +177,1275 @@
         }
 
         .stat-card {
-            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-            border-radius: 16px;
+            background: var(--surface-color);
             padding: 20px;
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
             text-align: center;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-            border: 1px solid rgba(34, 197, 94, 0.1);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
         }
 
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, #22c55e, #16a34a);
-            transform: translateX(-100%);
-            transition: transform 0.6s ease;
-        }
-
-        .stat-card:hover::before {
-            transform: translateX(0);
-        }
-
-        .stat-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
-        }
-
-        .stat-number {
+        .stat-value {
             font-size: 24px;
             font-weight: 700;
-            color: #22c55e;
+            color: var(--primary-color);
             margin-bottom: 5px;
         }
 
         .stat-label {
             font-size: 12px;
-            color: #64748b;
-            font-weight: 500;
+            color: var(--text-secondary);
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
-        .action-section {
+        .weekly-summary {
+            background: var(--surface-color);
+            border-radius: 16px;
+            padding: 25px;
             margin-bottom: 30px;
+            border: 1px solid var(--border-color);
+        }
+
+        .weekly-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+
+        .weekly-stat {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .weekly-stat:last-child {
+            border-bottom: none;
+        }
+
+        .weekly-label {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .weekly-value {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        /* Track Page */
+        .activity-form {
+            background: var(--surface-color);
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border: 1px solid var(--border-color);
+        }
+
+        .form-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--text-color);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-color);
+        }
+
+        .form-input,
+        .form-select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--background-color);
+            color: var(--text-color);
+            font-size: 14px;
+        }
+
+        .form-input:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .btn-primary {
+            width: 100%;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: var(--secondary-color);
+        }
+
+        .activity-list {
+            background: var(--surface-color);
+            border-radius: 16px;
+            padding: 25px;
+            border: 1px solid var(--border-color);
+        }
+
+        .activity-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-info {
+            flex: 1;
+        }
+
+        .activity-type {
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 4px;
+        }
+
+        .activity-details {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .activity-impact {
+            text-align: right;
+        }
+
+        .carbon-value {
+            font-weight: 700;
+            color: var(--error-color);
+        }
+
+        .carbon-saved {
+            color: var(--success-color);
+        }
+
+        /* Market Page */
+        .offset-grid {
+            display: grid;
+            gap: 20px;
+        }
+
+        .offset-card {
+            background: var(--surface-color);
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .offset-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .offset-image {
+            width: 100%;
+            height: 120px;
+            background: #f0f0f0;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .offset-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-color);
+        }
+
+        .offset-description {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+        }
+
+        .offset-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .offset-price {
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .offset-amount {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        /* Profile Page */
+        .profile-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: 700;
+            color: white;
+        }
+
+        .profile-name {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .profile-level {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .profile-section {
+            background: var(--surface-color);
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
         }
 
         .section-title {
             font-size: 18px;
             font-weight: 600;
-            color: #1e293b;
             margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            color: var(--text-color);
         }
 
-        .action-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
+        .achievement-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
         }
 
-        .action-btn {
-            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-            border: 1px solid rgba(34, 197, 94, 0.2);
+        .achievement-item {
+            text-align: center;
+            padding: 15px;
+            background: var(--background-color);
             border-radius: 12px;
-            padding: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
         }
 
-        .action-btn::before {
+        .achievement-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .achievement-name {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        /* Settings */
+        .settings-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .settings-item:last-child {
+            border-bottom: none;
+        }
+
+        .settings-toggle {
+            position: relative;
+            width: 44px;
+            height: 24px;
+            background: var(--border-color);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .settings-toggle.active {
+            background: var(--primary-color);
+        }
+
+        .settings-toggle::after {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, rgba(34, 197, 94, 0.05) 0%, rgba(22, 163, 74, 0.05) 100%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .action-btn:hover::before {
-            opacity: 1;
-        }
-
-        .action-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 6px 25px rgba(0,0,0,0.1);
-            border-color: rgba(34, 197, 94, 0.3);
-        }
-
-        .action-btn:active {
-            transform: translateY(0);
-        }
-
-        .action-content {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            z-index: 1;
-            position: relative;
-        }
-
-        .action-icon {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 18px;
-        }
-
-        .action-text {
-            flex: 1;
-        }
-
-        .action-title {
-            font-size: 14px;
-            font-weight: 600;
-            color: #1e293b;
-            margin-bottom: 2px;
-        }
-
-        .action-desc {
-            font-size: 12px;
-            color: #64748b;
-        }
-
-        .arrow {
-            color: #22c55e;
-            font-size: 16px;
-            z-index: 1;
-            position: relative;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
             transition: transform 0.3s ease;
         }
 
-        .action-btn:hover .arrow {
-            transform: translateX(4px);
+        .settings-toggle.active::after {
+            transform: translateX(20px);
         }
 
-        .bottom-nav {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-            border-top: 1px solid rgba(34, 197, 94, 0.1);
-            padding: 15px 20px;
+        /* Tips Section */
+        .tips-section,
+        .challenge-section,
+        .leaderboard-preview {
+            background: var(--surface-color);
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border: 1px solid var(--border-color);
+        }
+
+        .tip-card {
             display: flex;
-            justify-content: space-around;
-            align-items: center;
+            align-items: flex-start;
+            gap: 15px;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border-color);
         }
 
-        .nav-item {
+        .tip-card:last-child {
+            border-bottom: none;
+        }
+
+        .tip-icon {
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .tip-content h4 {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--text-color);
+        }
+
+        .tip-content p {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        /* Challenge Section */
+        .challenge-card {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+        }
+
+        .challenge-header {
             display: flex;
-            flex-direction: column;
+            justify-content: space-between;
             align-items: center;
-            gap: 4px;
-            padding: 8px 12px;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            cursor: pointer;
+            margin-bottom: 10px;
         }
 
-        .nav-item:hover {
-            background: rgba(34, 197, 94, 0.1);
+        .challenge-header h4 {
+            font-size: 16px;
+            font-weight: 600;
         }
 
-        .nav-item.active {
-            background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(22, 163, 74, 0.1) 100%);
+        .challenge-progress {
+            background: rgba(255,255,255,0.2);
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
         }
 
-        .nav-icon {
-            font-size: 20px;
-            color: #22c55e;
-        }
-
-        .nav-label {
-            font-size: 10px;
-            color: #64748b;
-            font-weight: 500;
-        }
-
-        .nav-item.active .nav-label {
-            color: #22c55e;
-        }
-
-        .progress-ring {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            width: 50px;
-            height: 50px;
-        }
-
-        .progress-ring-circle {
+        .progress-bar {
             width: 100%;
+            height: 6px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 3px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
             height: 100%;
-            border-radius: 50%;
-            border: 3px solid rgba(34, 197, 94, 0.2);
-            border-top: 3px solid #22c55e;
-            animation: spin 3s linear infinite;
+            background: white;
+            border-radius: 3px;
+            transition: width 0.3s ease;
         }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .btn-secondary {
+            background: white;
+            color: var(--primary-color);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
 
-        .floating-add {
-            position: absolute;
-            bottom: 90px;
-            right: 20px;
-            width: 56px;
-            height: 56px;
-            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+        /* Leaderboard */
+        .leader-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .leader-item:last-child {
+            border-bottom: none;
+        }
+
+        .leader-rank {
+            width: 30px;
+            height: 30px;
+            background: var(--primary-color);
+            color: white;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            font-size: 24px;
-            box-shadow: 0 8px 32px rgba(34, 197, 94, 0.3);
+            font-weight: 700;
+            font-size: 14px;
+            margin-right: 15px;
+        }
+
+        .leader-name {
+            flex: 1;
+            font-weight: 500;
+        }
+
+        .leader-score {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        /* Proof System */
+        .proof-options {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .proof-btn {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            padding: 15px 10px;
+            border: 2px dashed var(--border-color);
+            border-radius: 8px;
+            background: var(--background-color);
+            color: var(--text-secondary);
             cursor: pointer;
             transition: all 0.3s ease;
-            z-index: 10;
+            font-size: 12px;
         }
 
-        .floating-add:hover {
-            transform: scale(1.1);
-            box-shadow: 0 12px 40px rgba(34, 197, 94, 0.4);
+        .proof-btn:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
         }
 
-        .floating-add:active {
-            transform: scale(0.95);
+        .proof-btn.active {
+            border-color: var(--success-color);
+            background: rgba(76, 175, 80, 0.1);
+            color: var(--success-color);
         }
 
-        .impact-badge {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-            color: white;
-            padding: 4px 8px;
-            border-radius: 12px;
+        .proof-status {
+            font-size: 12px;
+            padding: 8px;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .proof-status.success {
+            background: rgba(76, 175, 80, 0.1);
+            color: var(--success-color);
+        }
+
+        .proof-status.pending {
+            background: rgba(255, 152, 0, 0.1);
+            color: var(--warning-color);
+        }
+
+        /* Verification Badges */
+        .verification-badge {
             font-size: 10px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            box-shadow: 0 2px 8px rgba(251, 191, 36, 0.3);
+            padding: 2px 6px;
+            border-radius: 10px;
+            margin-top: 4px;
+            text-align: center;
         }
 
-        .pulse-dot {
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            width: 8px;
-            height: 8px;
-            background: #ef4444;
-            border-radius: 50%;
-            animation: pulse 2s ease-in-out infinite;
+        .verification-badge.verified {
+            background: rgba(76, 175, 80, 0.1);
+            color: var(--success-color);
         }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.7; transform: scale(1.2); }
-        }
-
-        /* Responsive adjustments */
-        @media (max-width: 400px) {
-            .phone-container {
-                width: 100%;
-                height: 100vh;
-                border-radius: 0;
-                padding: 0;
-            }
-            
-            .screen {
-                border-radius: 0;
-            }
+        .verification-badge.unverified {
+            background: rgba(158, 158, 158, 0.1);
+            color: var(--text-secondary);
         }
     </style>
 </head>
-<body>
-    <div class="phone-container">
-        <div class="screen">
-            <div class="impact-badge">🌍 Live Impact</div>
-            <div class="progress-ring">
-                <div class="progress-ring-circle"></div>
+<body data-theme="dark">
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <div style="width: 24px; height: 24px; background: var(--primary-color); border-radius: 50%;"></div>
+                EcoLedger
             </div>
-            
-            <div class="app-header">
-                <div class="logo-container">
-                    <div class="logo">
-                        <div class="logo-icon">🌱</div>
-                    </div>
-                    <h1 class="app-title">EcoLedger</h1>
-                    <p class="app-subtitle">Track • Reduce • Trade</p>
-                </div>
-            </div>
+            <button class="theme-toggle" onclick="toggleTheme()">
+                <span id="theme-text">Light</span>
+            </button>
+        </header>
 
-            <div class="main-content">
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Page -->
+            <div class="page active" id="dashboard">
                 <div class="stats-grid">
                     <div class="stat-card">
-                        <div class="stat-number">2.4kg</div>
+                        <div class="stat-value">2.4kg</div>
                         <div class="stat-label">This Week</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-number">156</div>
+                        <div class="stat-value">156</div>
                         <div class="stat-label">EcoPoints</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-number">12</div>
+                        <div class="stat-value">12</div>
                         <div class="stat-label">Offsets</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-number">8.1kg</div>
+                        <div class="stat-value">8.1kg</div>
                         <div class="stat-label">Total Saved</div>
                     </div>
                 </div>
 
-                <div class="action-section">
-                    <h2 class="section-title">
-                        <span>📊</span> Quick Actions
-                    </h2>
-                    <div class="action-buttons">
-                        <div class="action-btn">
-                            <div class="action-content">
-                                <div class="action-icon">📱</div>
-                                <div class="action-text">
-                                    <div class="action-title">Log Waste</div>
-                                    <div class="action-desc">Record your daily waste items</div>
-                                </div>
-                            </div>
-                            <div class="arrow">›</div>
+                <div class="weekly-summary">
+                    <h3 class="weekly-title">Weekly Summary</h3>
+                    <div class="weekly-stat">
+                        <span class="weekly-label">Transportation</span>
+                        <span class="weekly-value">1.2kg CO₂</span>
+                    </div>
+                    <div class="weekly-stat">
+                        <span class="weekly-label">Energy Usage</span>
+                        <span class="weekly-value">0.8kg CO₂</span>
+                    </div>
+                    <div class="weekly-stat">
+                        <span class="weekly-label">Food Choices</span>
+                        <span class="weekly-value">0.4kg CO₂</span>
+                    </div>
+                    <div class="weekly-stat">
+                        <span class="weekly-label">Goal Progress</span>
+                        <span class="weekly-value carbon-saved">-15% vs last week</span>
+                    </div>
+                </div>
+
+                <!-- Add real image placeholder here -->
+                <!-- Replace with actual environmental impact chart image -->
+                <div style="background: url('https://via.placeholder.com/350x200/4a7c59/ffffff?text=Carbon+Footprint+Chart') center/cover; height: 200px; border-radius: 16px; margin-bottom: 20px;"></div>
+
+                <!-- Tips Section -->
+                <div class="tips-section">
+                    <h3 class="section-title">Today's Eco Tips</h3>
+                    <div class="tip-card">
+                        <div class="tip-icon">💡</div>
+                        <div class="tip-content">
+                            <h4>Smart Commuting</h4>
+                            <p>Taking public transport for trips over 5km can reduce your carbon footprint by up to 45%.</p>
                         </div>
-                        
-                        <div class="action-btn">
-                            <div class="action-content">
-                                <div class="action-icon">🔄</div>
-                                <div class="action-text">
-                                    <div class="action-title">Find Offsets</div>
-                                    <div class="action-desc">Browse local recycling options</div>
-                                </div>
-                            </div>
-                            <div class="arrow">›</div>
-                            <div class="pulse-dot"></div>
+                    </div>
+                    <div class="tip-card">
+                        <div class="tip-icon">🌱</div>
+                        <div class="tip-content">
+                            <h4>Energy Efficiency</h4>
+                            <p>Unplugging devices when not in use can save 10% on your electricity bill and reduce emissions.</p>
                         </div>
-                        
-                        <div class="action-btn">
-                            <div class="action-content">
-                                <div class="action-icon">🏪</div>
-                                <div class="action-text">
-                                    <div class="action-title">Marketplace</div>
-                                    <div class="action-desc">Trade with local eco-partners</div>
-                                </div>
-                            </div>
-                            <div class="arrow">›</div>
+                    </div>
+                </div>
+
+                <!-- Community Challenge -->
+                <div class="challenge-section">
+                    <h3 class="section-title">Weekly Challenge</h3>
+                    <div class="challenge-card">
+                        <div class="challenge-header">
+                            <h4>Car-Free Monday</h4>
+                            <span class="challenge-progress">3/7 days</span>
                         </div>
-                        
-                        <div class="action-btn">
-                            <div class="action-content">
-                                <div class="action-icon">🎯</div>
-                                <div class="action-text">
-                                    <div class="action-title">My Impact</div>
-                                    <div class="action-desc">View detailed footprint report</div>
-                                </div>
+                        <p>Use alternative transport methods for an entire week. Join 1,247 other users!</p>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 43%;"></div>
+                        </div>
+                        <button class="btn-secondary" onclick="joinChallenge()">Join Challenge</button>
+                    </div>
+                </div>
+
+                <!-- Leaderboard Preview -->
+                <div class="leaderboard-preview">
+                    <h3 class="section-title">Community Leaders</h3>
+                    <div class="leader-item">
+                        <span class="leader-rank">1</span>
+                        <span class="leader-name">Sarah M.</span>
+                        <span class="leader-score">2,840 pts</span>
+                    </div>
+                    <div class="leader-item">
+                        <span class="leader-rank">2</span>
+                        <span class="leader-name">Mike K.</span>
+                        <span class="leader-score">2,615 pts</span>
+                    </div>
+                    <div class="leader-item">
+                        <span class="leader-rank">3</span>
+                        <span class="leader-name">You</span>
+                        <span class="leader-score">1,247 pts</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Track Page -->
+            <div class="page" id="track">
+                <div class="activity-form">
+                    <h3 class="form-title">Log Activity</h3>
+                    <div class="form-group">
+                        <label class="form-label">Activity Type</label>
+                        <select class="form-select" id="activityType">
+                            <option>Transportation</option>
+                            <option>Energy</option>
+                            <option>Food</option>
+                            <option>Waste</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Description</label>
+                        <input type="text" class="form-input" placeholder="e.g., Drove to work" id="activityDesc">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Amount/Distance</label>
+                        <input type="number" class="form-input" placeholder="e.g., 25 km" id="activityAmount">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Proof (Optional)</label>
+                        <div class="proof-options">
+                            <button type="button" class="proof-btn" onclick="takePhoto()">
+                                <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 15.5c1.93 0 3.5-1.57 3.5-3.5s-1.57-3.5-3.5-3.5-3.5 1.57-3.5 3.5 1.57 3.5 3.5 3.5zM17.25 9h1.25L16 4h-8L5.5 9H6.5C6.78 7.89 7.78 7 9 7h6c1.22 0 2.22.89 2.5 2zM20 9h-2.75c-.28-1.78-1.81-3-3.75-3H10.5c-1.94 0-3.47 1.22-3.75 3H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V11c0-1.1-.9-2-2-2z"/>
+                                </svg>
+                                Take Photo
+                            </button>
+                            <button type="button" class="proof-btn" onclick="uploadReceipt()">
+                                <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+                                </svg>
+                                Upload Receipt
+                            </button>
+                            <button type="button" class="proof-btn" onclick="enableGPS()">
+                                <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12,2C13.1,2 14,2.9 14,4C14,5.1 13.1,6 12,6C10.9,6 10,5.1 10,4C10,2.9 10.9,2 12,2M21,9V7L15,1H5C3.89,1 3,1.89 3,3V21A2,2 0 0,0 5,23H19A2,2 0 0,0 21,21V9M19,21H5V3H14.17L19,7.83V21M12,12A3,3 0 0,1 15,15A3,3 0 0,1 12,18A3,3 0 0,1 9,15A3,3 0 0,1 12,12Z"/>
+                                </svg>
+                                Use GPS
+                            </button>
+                        </div>
+                        <div class="proof-status" id="proofStatus"></div>
+                    </div>
+                    <button class="btn-primary" onclick="addActivity()">Add Activity</button>
+                </div>
+
+                <div class="activity-list">
+                    <h3 class="form-title">Recent Activities</h3>
+                    <div id="activityContainer">
+                        <div class="activity-item">
+                            <div class="activity-info">
+                                <div class="activity-type">Car Commute</div>
+                                <div class="activity-details">45 km • Today</div>
                             </div>
-                            <div class="arrow">›</div>
+                            <div class="activity-impact">
+                                <div class="carbon-value">+0.8kg CO₂</div>
+                                <div class="verification-badge unverified">Unverified</div>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-info">
+                                <div class="activity-type">Public Transport</div>
+                                <div class="activity-details">12 km • Yesterday • GPS verified</div>
+                            </div>
+                            <div class="activity-impact">
+                                <div class="carbon-value carbon-saved">-0.3kg CO₂</div>
+                                <div class="verification-badge verified">✓ Verified</div>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-info">
+                                <div class="activity-type">Renewable Energy</div>
+                                <div class="activity-details">Solar panel usage • 2 days ago • Receipt uploaded</div>
+                            </div>
+                            <div class="activity-impact">
+                                <div class="carbon-value carbon-saved">-0.5kg CO₂</div>
+                                <div class="verification-badge verified">✓ Verified</div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="floating-add" onclick="animateAdd(this)">+</div>
+            <!-- Market Page -->
+            <div class="page" id="market">
+                <div class="offset-grid">
+                    <div class="offset-card" onclick="purchaseOffset('forest')">
+                        <!-- Replace with actual reforestation project image -->
+                        <div class="offset-image" style="background-image: url('https://via.placeholder.com/350x120/228B22/ffffff?text=Forest+Restoration');"></div>
+                        <h4 class="offset-title">Forest Restoration</h4>
+                        <p class="offset-description">Support tree planting initiatives in Brazil. Each credit represents 1 ton of CO₂ sequestered.</p>
+                        <div class="offset-footer">
+                            <span class="offset-price">$12/credit</span>
+                            <span class="offset-amount">1t CO₂</span>
+                        </div>
+                    </div>
 
-            <div class="bottom-nav">
-                <div class="nav-item active">
-                    <div class="nav-icon">🏠</div>
-                    <div class="nav-label">Home</div>
-                </div>
-                <div class="nav-item">
-                    <div class="nav-icon">📈</div>
-                    <div class="nav-label">Track</div>
-                </div>
-                <div class="nav-item">
-                    <div class="nav-icon">🌍</div>
-                    <div class="nav-label">Offsets</div>
-                </div>
-                <div class="nav-item">
-                    <div class="nav-icon">💰</div>
-                    <div class="nav-label">Trade</div>
-                </div>
-                <div class="nav-item">
-                    <div class="nav-icon">👤</div>
-                    <div class="nav-label">Profile</div>
+                    <div class="offset-card" onclick="purchaseOffset('solar')">
+                        <!-- Replace with actual solar farm image -->
+                        <div class="offset-image" style="background-image: url('https://via.placeholder.com/350x120/FFD700/ffffff?text=Solar+Energy');"></div>
+                        <h4 class="offset-title">Solar Energy Project</h4>
+                        <p class="offset-description">Fund solar panel installations in developing communities. Clean energy for sustainable future.</p>
+                        <div class="offset-footer">
+                            <span class="offset-price">$15/credit</span>
+                            <span class="offset-amount">1t CO₂</span>
+                        </div>
+                    </div>
+
+                    <div class="offset-card" onclick="purchaseOffset('wind')">
+                        <!-- Replace with actual wind farm image -->
+                        <div class="offset-image" style="background-image: url('https://via.placeholder.com/350x120/87CEEB/ffffff?text=Wind+Power');"></div>
+                        <h4 class="offset-title">Wind Energy Farm</h4>
+                        <p class="offset-description">Support wind turbine projects generating clean electricity and reducing fossil fuel dependency.</p>
+                        <div class="offset-footer">
+                            <span class="offset-price">$18/credit</span>
+                            <span class="offset-amount">1t CO₂</span>
+                        </div>
+                    </div>
+
+                    <div class="offset-card" onclick="purchaseOffset('ocean')">
+                        <!-- Replace with actual ocean cleanup image -->
+                        <div class="offset-image" style="background-image: url('https://via.placeholder.com/350x120/1E90FF/ffffff?text=Ocean+Cleanup');"></div>
+                        <h4 class="offset-title">Ocean Cleanup</h4>
+                        <p class="offset-description">Marine ecosystem restoration and plastic waste removal projects protecting ocean biodiversity.</p>
+                        <div class="offset-footer">
+                            <span class="offset-price">$20/credit</span>
+                            <span class="offset-amount">1t CO₂</span>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
+
+            <!-- Profile Page -->
+            <div class="page" id="profile">
+                <div class="profile-header">
+                    <!-- Replace with actual user avatar or upload functionality -->
+                    <div class="profile-avatar">JS</div>
+                    <h2 class="profile-name">John Smith</h2>
+                    <p class="profile-level">Eco Warrior • Level 3</p>
+                </div>
+
+                <div class="profile-section">
+                    <h3 class="section-title">Carbon Impact</h3>
+                    <div class="weekly-stat">
+                        <span class="weekly-label">Monthly Average</span>
+                        <span class="weekly-value">12.4kg CO₂</span>
+                    </div>
+                    <div class="weekly-stat">
+                        <span class="weekly-label">Best Week</span>
+                        <span class="weekly-value carbon-saved">1.8kg CO₂</span>
+                    </div>
+                    <div class="weekly-stat">
+                        <span class="weekly-label">Total Offset</span>
+                        <span class="weekly-value">45.2kg CO₂</span>
+                    </div>
+                    <div class="weekly-stat">
+                        <span class="weekly-label">EcoPoints Balance</span>
+                        <span class="weekly-value">1,247 pts</span>
+                    </div>
+                </div>
+
+                <div class="profile-section">
+                    <h3 class="section-title">Achievements</h3>
+                    <div class="achievement-grid">
+                        <div class="achievement-item">
+                            <div class="achievement-icon">🌱</div>
+                            <div class="achievement-name">First Steps</div>
+                        </div>
+                        <div class="achievement-item">
+                            <div class="achievement-icon">🚲</div>
+                            <div class="achievement-name">Eco Commuter</div>
+                        </div>
+                        <div class="achievement-item">
+                            <div class="achievement-icon">🌍</div>
+                            <div class="achievement-name">Planet Saver</div>
+                        </div>
+                        <div class="achievement-item">
+                            <div class="achievement-icon">⚡</div>
+                            <div class="achievement-name">Energy Efficient</div>
+                        </div>
+                        <div class="achievement-item">
+                            <div class="achievement-icon">🏆</div>
+                            <div class="achievement-name">Carbon Neutral</div>
+                        </div>
+                        <div class="achievement-item">
+                            <div class="achievement-icon">🎯</div>
+                            <div class="achievement-name">Goal Crusher</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="profile-section">
+                    <h3 class="section-title">Settings</h3>
+                    <div class="settings-item">
+                        <span>Push Notifications</span>
+                        <div class="settings-toggle active" onclick="toggleSetting(this)"></div>
+                    </div>
+                    <div class="settings-item">
+                        <span>Weekly Reports</span>
+                        <div class="settings-toggle active" onclick="toggleSetting(this)"></div>
+                    </div>
+                    <div class="settings-item">
+                        <span>Data Sharing</span>
+                        <div class="settings-toggle" onclick="toggleSetting(this)"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Navigation -->
+        <nav class="nav">
+            <a class="nav-item active" onclick="showPage('dashboard', this)">
+                <svg class="nav-icon" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
+                </svg>
+                <span class="nav-text">Dashboard</span>
+            </a>
+            <a class="nav-item" onclick="showPage('track', this)">
+                <svg class="nav-icon" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+                </svg>
+                <span class="nav-text">Track</span>
+            </a>
+            <a class="nav-item" onclick="showPage('market', this)">
+                <svg class="nav-icon" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L21.7 4H5.21l-.94-2H1zm16 16c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+                </svg>
+                <span class="nav-text">Market</span>
+            </a>
+            <a class="nav-item" onclick="showPage('profile', this)">
+                <svg class="nav-icon" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                </svg>
+                <span class="nav-text">Profile</span>
+            </a>
+        </nav>
     </div>
 
     <script>
-        function animateAdd(element) {
-            element.style.transform = 'scale(0.9)';
-            setTimeout(() => {
-                element.style.transform = 'scale(1.1)';
-                setTimeout(() => {
-                    element.style.transform = 'scale(1)';
-                    showAddModal();
-                }, 100);
-            }, 100);
+        // Theme Toggle
+        function toggleTheme() {
+            const body = document.body;
+            const themeText = document.getElementById('theme-text');
+            
+            if (body.getAttribute('data-theme') === 'dark') {
+                body.setAttribute('data-theme', 'light');
+                themeText.textContent = 'Dark';
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                themeText.textContent = 'Light';
+            }
         }
 
-        function showAddModal() {
-            const notification = document.createElement('div');
-            notification.style.cssText = `
-                position: fixed;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
-                color: white;
-                padding: 20px 30px;
-                border-radius: 12px;
-                box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-                z-index: 1000;
-                font-weight: 600;
-                text-align: center;
-                opacity: 0;
-                transition: all 0.3s ease;
-            `;
-            notification.innerHTML = '✨ Add New Waste Entry';
-            document.body.appendChild(notification);
+        // Page Navigation
+        function showPage(pageId, navItem) {
+            // Hide all pages
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => page.classList.remove('active'));
             
-            setTimeout(() => {
-                notification.style.opacity = '1';
-                notification.style.transform = 'translate(-50%, -50%) scale(1.05)';
-            }, 50);
+            // Show selected page
+            document.getElementById(pageId).classList.add('active');
             
+            // Update navigation
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => item.classList.remove('active'));
+            navItem.classList.add('active');
+        }
+
+        // Proof System Functions
+        let currentProofType = null;
+        let currentProofData = null;
+
+        function takePhoto() {
+            const btn = event.target.closest('.proof-btn');
+            resetProofButtons();
+            btn.classList.add('active');
+            currentProofType = 'photo';
+            
+            // Simulate camera access
+            document.getElementById('proofStatus').innerHTML = 
+                '<div class="proof-status pending">📸 Camera ready - tap to capture</div>';
+            
+            // In real app: navigator.mediaDevices.getUserMedia({ video: true })
             setTimeout(() => {
-                notification.style.opacity = '0';
-                notification.style.transform = 'translate(-50%, -50%) scale(0.95)';
-                setTimeout(() => {
-                    document.body.removeChild(notification);
-                }, 300);
+                document.getElementById('proofStatus').innerHTML = 
+                    '<div class="proof-status success">✓ Photo captured - verification pending</div>';
+                currentProofData = 'photo_' + Date.now() + '.jpg';
             }, 2000);
         }
 
-        // Add interactive hover effects
-        document.querySelectorAll('.action-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                this.style.transform = 'scale(0.98)';
-                setTimeout(() => {
-                    this.style.transform = 'translateY(-1px)';
-                }, 100);
-            });
-        });
+        function uploadReceipt() {
+            const btn = event.target.closest('.proof-btn');
+            resetProofButtons();
+            btn.classList.add('active');
+            currentProofType = 'receipt';
+            
+            // Create file input
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = 'image/*,.pdf';
+            fileInput.onchange = function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    document.getElementById('proofStatus').innerHTML = 
+                        '<div class="proof-status success">✓ Receipt uploaded: ' + file.name + '</div>';
+                    currentProofData = file.name;
+                }
+            };
+            fileInput.click();
+        }
 
-        // Add navigation functionality
-        document.querySelectorAll('.nav-item').forEach(item => {
-            item.addEventListener('click', function() {
-                document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-                this.classList.add('active');
+        function enableGPS() {
+            const btn = event.target.closest('.proof-btn');
+            resetProofButtons();
+            btn.classList.add('active');
+            currentProofType = 'gps';
+            
+            document.getElementById('proofStatus').innerHTML = 
+                '<div class="proof-status pending">📍 Getting your location...</div>';
+            
+            // In real app: navigator.geolocation.getCurrentPosition()
+            setTimeout(() => {
+                document.getElementById('proofStatus').innerHTML = 
+                    '<div class="proof-status success">✓ Location verified - Ready to log activity</div>';
+                currentProofData = { lat: 40.7128, lng: -74.0060, accuracy: 10 };
+            }, 2000);
+        }
+
+        function resetProofButtons() {
+            document.querySelectorAll('.proof-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById('proofStatus').innerHTML = '';
+        }
+
+        // Challenge Functions
+        function joinChallenge() {
+            alert('Joined Car-Free Monday challenge! You\'ll get daily reminders and tips.');
+            // In real app: POST /api/challenges/join
+        }
+
+        // Enhanced Add Activity with Verification
+        function addActivity() {
+            const type = document.getElementById('activityType').value;
+            const desc = document.getElementById('activityDesc').value;
+            const amount = document.getElementById('activityAmount').value;
+            
+            if (!desc || !amount) {
+                alert('Please fill in all fields');
+                return;
+            }
+
+            // Calculate carbon impact (simplified calculation)
+            let impact = 0;
+            switch(type) {
+                case 'Transportation':
+                    impact = (amount * 0.2).toFixed(1);
+                    break;
+                case 'Energy':
+                    impact = (amount * 0.5).toFixed(1);
+                    break;
+                case 'Food':
+                    impact = (amount * 0.3).toFixed(1);
+                    break;
+                case 'Waste':
+                    impact = (amount * 0.1).toFixed(1);
+                    break;
+            }
+
+            // Determine verification status
+            let verificationStatus = 'unverified';
+            let verificationText = '';
+            let bonusPoints = 0;
+            
+            if (currentProofType) {
+                verificationStatus = 'verified';
+                bonusPoints = 20; // Extra points for verified activities
                 
-                // Simple vibration effect
-                this.style.transform = 'scale(0.95)';
+                switch(currentProofType) {
+                    case 'photo':
+                        verificationText = ' • Photo verified';
+                        break;
+                    case 'receipt':
+                        verificationText = ' • Receipt uploaded';
+                        break;
+                    case 'gps':
+                        verificationText = ' • GPS verified';
+                        break;
+                }
+            }
+
+            // Create new activity item
+            const container = document.getElementById('activityContainer');
+            const newActivity = document.createElement('div');
+            newActivity.className = 'activity-item';
+            newActivity.innerHTML = `
+                <div class="activity-info">
+                    <div class="activity-type">${desc}</div>
+                    <div class="activity-details">${amount} units • Just now${verificationText}</div>
+                </div>
+                <div class="activity-impact">
+                    <div class="carbon-value ${impact < 0 ? 'carbon-saved' : ''}">${impact > 0 ? '+' : ''}${impact}kg CO₂</div>
+                    <div class="verification-badge ${verificationStatus}">
+                        ${verificationStatus === 'verified' ? '✓ Verified' : 'Unverified'}
+                    </div>
+                </div>
+            `;
+            
+            container.insertBefore(newActivity, container.firstChild);
+            
+            // Clear form and proof status
+            document.getElementById('activityDesc').value = '';
+            document.getElementById('activityAmount').value = '';
+            resetProofButtons();
+            currentProofType = null;
+            currentProofData = null;
+            
+            // Update stats with bonus for verification
+            updateStats(parseFloat(impact), bonusPoints);
+            
+            if (verificationStatus === 'verified') {
+                alert(`Activity logged and verified! +${bonusPoints} bonus EcoPoints earned.`);
+            }
+        }
+
+        // Enhanced stats update with bonus points
+        function updateStats(newImpact, bonusPoints = 0) {
+            const weeklyCard = document.querySelector('.stat-value');
+            const currentWeekly = parseFloat(weeklyCard.textContent);
+            weeklyCard.textContent = (currentWeekly + newImpact).toFixed(1) + 'kg';
+            
+            // Update EcoPoints
+            const pointsCard = document.querySelectorAll('.stat-value')[1];
+            const currentPoints = parseInt(pointsCard.textContent);
+            const basePointChange = newImpact > 0 ? -Math.round(newImpact * 10) : Math.abs(Math.round(newImpact * 15));
+            const totalPointChange = basePointChange + bonusPoints;
+            pointsCard.textContent = Math.max(0, currentPoints + totalPointChange);
+        }
+        function addActivity() {
+            const type = document.getElementById('activityType').value;
+            const desc = document.getElementById('activityDesc').value;
+            const amount = document.getElementById('activityAmount').value;
+            
+            if (!desc || !amount) {
+                alert('Please fill in all fields');
+                return;
+            }
+
+            // Calculate carbon impact (simplified calculation)
+            let impact = 0;
+            switch(type) {
+                case 'Transportation':
+                    impact = (amount * 0.2).toFixed(1); // kg CO2 per km
+                    break;
+                case 'Energy':
+                    impact = (amount * 0.5).toFixed(1); // kg CO2 per kWh
+                    break;
+                case 'Food':
+                    impact = (amount * 0.3).toFixed(1); // kg CO2 per meal
+                    break;
+                case 'Waste':
+                    impact = (amount * 0.1).toFixed(1); // kg CO2 per kg waste
+                    break;
+            }
+
+            // Create new activity item
+            const container = document.getElementById('activityContainer');
+            const newActivity = document.createElement('div');
+            newActivity.className = 'activity-item';
+            newActivity.innerHTML = `
+                <div class="activity-info">
+                    <div class="activity-type">${desc}</div>
+                    <div class="activity-details">${amount} units • Just now</div>
+                </div>
+                <div class="activity-impact">
+                    <div class="carbon-value">+${impact}kg CO₂</div>
+                </div>
+            `;
+            
+            container.insertBefore(newActivity, container.firstChild);
+            
+            // Clear form
+            document.getElementById('activityDesc').value = '';
+            document.getElementById('activityAmount').value = '';
+            
+            // Update stats (simple increment)
+            updateStats(parseFloat(impact));
+        }
+
+        // Update Dashboard Stats
+        function updateStats(newImpact) {
+            const weeklyCard = document.querySelector('.stat-value');
+            const currentWeekly = parseFloat(weeklyCard.textContent);
+            weeklyCard.textContent = (currentWeekly + newImpact).toFixed(1) + 'kg';
+            
+            // Update EcoPoints (lose points for emissions, gain for reductions)
+            const pointsCard = document.querySelectorAll('.stat-value')[1];
+            const currentPoints = parseInt(pointsCard.textContent);
+            const pointChange = newImpact > 0 ? -Math.round(newImpact * 10) : Math.abs(Math.round(newImpact * 15));
+            pointsCard.textContent = Math.max(0, currentPoints + pointChange);
+        }
+
+        // Purchase Offset Function
+        function purchaseOffset(type) {
+            const prices = {
+                'forest': 12,
+                'solar': 15,
+                'wind': 18,
+                'ocean': 20
+            };
+            
+            const projectNames = {
+                'forest': 'Forest Restoration',
+                'solar': 'Solar Energy Project',
+                'wind': 'Wind Energy Farm',
+                'ocean': 'Ocean Cleanup'
+            };
+            
+            const price = prices[type];
+            const name = projectNames[type];
+            
+            if (confirm(`Purchase 1 carbon credit from ${name} for ${price}?`)) {
+                // Update offset count
+                const offsetCard = document.querySelectorAll('.stat-value')[2];
+                const currentOffsets = parseInt(offsetCard.textContent);
+                offsetCard.textContent = currentOffsets + 1;
+                
+                // Update EcoPoints
+                const pointsCard = document.querySelectorAll('.stat-value')[1];
+                const currentPoints = parseInt(pointsCard.textContent);
+                pointsCard.textContent = currentPoints + 50; // Bonus points for purchasing offsets
+                
+                // Update total saved
+                const savedCard = document.querySelectorAll('.stat-value')[3];
+                const currentSaved = parseFloat(savedCard.textContent);
+                savedCard.textContent = (currentSaved + 1.0).toFixed(1) + 'kg';
+                
+                alert(`Successfully purchased 1 credit from ${name}! +50 EcoPoints earned.`);
+            }
+        }
+
+        // Settings Toggle Function
+        function toggleSetting(toggle) {
+            toggle.classList.toggle('active');
+        }
+
+        // Initialize app with sample data
+        function initializeApp() {
+            // Set initial theme
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            if (!prefersDark) {
+                document.body.setAttribute('data-theme', 'light');
+                document.getElementById('theme-text').textContent = 'Dark';
+            }
+            
+            console.log('EcoLedger MVP initialized');
+        }
+
+        // Run initialization
+        document.addEventListener('DOMContentLoaded', initializeApp);
+
+        // Add some interactivity for demo purposes
+        document.addEventListener('click', function(e) {
+            // Add subtle click feedback for cards
+            if (e.target.closest('.stat-card, .offset-card, .activity-item')) {
+                const element = e.target.closest('.stat-card, .offset-card, .activity-item');
+                element.style.transform = 'scale(0.98)';
                 setTimeout(() => {
-                    this.style.transform = 'scale(1)';
-                }, 100);
-            });
+                    element.style.transform = '';
+                }, 150);
+            }
         });
 
-        // Animate stats on load
-        window.addEventListener('load', function() {
-            const statNumbers = document.querySelectorAll('.stat-number');
-            statNumbers.forEach((stat, index) => {
-                setTimeout(() => {
-                    stat.style.transform = 'scale(1.2)';
-                    setTimeout(() => {
-                        stat.style.transform = 'scale(1)';
-                    }, 200);
-                }, index * 200);
-            });
-        });
+        // Simulate real-time updates (optional - remove if not needed)
+        setInterval(() => {
+            // Update time stamps for activities
+            const timeStamps = document.querySelectorAll('.activity-details');
+            // This is just for demo - in real app, you'd track actual timestamps
+        }, 60000); // Update every minute
+
+        /*
+        TODO: Integration points for real implementation
+        
+        1. BACKEND INTEGRATION:
+        - Connect addActivity() to POST /api/activities
+        - Connect purchaseOffset() to POST /api/offsets/purchase  
+        - Load user profile from GET /api/user/profile
+        - Sync dashboard stats from GET /api/user/stats
+        
+        2. IMAGE REPLACEMENTS:
+        - Replace placeholder URLs in offset cards with real project images
+        - Add user avatar upload functionality in profile
+        - Replace dashboard chart with real carbon tracking visualization
+        
+        3. REAL CARBON CALCULATIONS:
+        - Implement proper emission factors for different activities
+        - Add location-based calculations
+        - Connect to real carbon offset project APIs
+        
+        4. DATA PERSISTENCE:
+        - Save user settings to localStorage or backend
+        - Cache activity data for offline use
+        - Store theme preference
+        
+        5. NOTIFICATIONS:
+        - Implement push notification system
+        - Add weekly/monthly report generation
+        - Goal tracking and achievement system
+        
+        6. PAYMENT INTEGRATION:
+        - Add Stripe/PayPal for offset purchases
+        - Implement wallet/credit system
+        - Transaction history tracking
+        */
     </script>
 </body>
 </html>
